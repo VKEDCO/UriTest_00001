@@ -1,11 +1,5 @@
 package org.vkedco.mobappdev.uri_test;
 
-/*
-*************************************************
-* Bugs to vladimir dot kulyukin at gmail dot com
-*************************************************
-*/
-
 import java.util.List;
 import android.net.Uri;
 import android.os.Bundle;
