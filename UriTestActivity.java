@@ -1,11 +1,5 @@
 package org.vkedco.mobappdev.uri_test;
 
-/*
-*************************************************
-* Bugs to vladimir dot kulyukin at gmail dot com
-*************************************************
-*/
-
 import java.util.List;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +15,13 @@ public class UriTestActivity extends Activity {
 	EditText edTxtUriInfo = null;
 	Resources mRes = null;
 	
+	// AUTHORITY & PATHS
 	static final String AUTHORITY = "org.vkedco.mobappdev.content_providers.books";
+	static final String BOOK_ID_PATH     = "book_title" + "/id";
+	static final String BOOK_TITLE_PATH  = "book_title" + "/title";
+	static final String BOOK_AUTHOR_PATH = "book_author" + "/author";
+	static final String BOOK_COVER_PATH  = "book_cover" + "/cover_image";
+	static final String SLASH_HASH       = "/#";
 	static final String LOGTAG    = "URI_TEST";
 	
 	private static final UriMatcher mUriMatcher;
@@ -58,13 +58,6 @@ public class UriTestActivity extends Activity {
 
 	static final String BOOK_COVER_ALL_MIME    = "vnd.android.cursor.dir/vnd.vkedco.mobappdev.book_cover_all";
 	static final String BOOK_COVER_SINGLE_MIME = "vnd.android.cursor.dir/vnd.vkedco.mobappdev.book_cover_single";
-
-	// uri paths
-	static final String BOOK_ID_PATH     = "book_title" + "/id";
-	static final String BOOK_TITLE_PATH  = "book_title" + "/title";
-	static final String BOOK_AUTHOR_PATH = "book_author" + "/author";
-	static final String BOOK_COVER_PATH  = "book_cover" + "/cover_image";
-	static final String SLASH_HASH       = "/#";
 
 	// let's create a UriMatcher and add a few URIs to it
 	static {
@@ -106,6 +99,7 @@ public class UriTestActivity extends Activity {
         String uri_5 = getUriInfo(Uri.parse(mRes.getString(R.string.test_uri_5)));
         
         edTxtUriInfo.setText(uri_1 + uri_2 + uri_3 + uri_4 + uri_5);
+        //edTxtUriInfo.setEnabled(false);
         
         // do testing and Log.d results
         testLogMatchUri(mRes);
@@ -192,6 +186,32 @@ public class UriTestActivity extends Activity {
     	sb.append("QUERY: " + uri.getQuery() + "\n");
     	sb.append("TITLE_PARAM: " + uri.getQueryParameter("title") + "\n");
     	sb.append("AUTHOR_PARAM: " + uri.getQueryParameter("author") + "\n");
+    	sb.append("MIME: " + getUriMIME(uri));
     	return sb.toString();
     }
+    
+    static String getUriMIME(Uri uri) {
+    	int uri_match_code = mUriMatcher.match(uri);
+    	switch ( uri_match_code ) {
+    	case CODE_BOOK_ID_ALL: 
+    		return UriTestActivity.BOOK_AUTHOR_ALL_MIME;
+    	case CODE_BOOK_ID_SINGLE:
+    		return UriTestActivity.BOOK_AUTHOR_SINGLE_MIME;
+    	case CODE_BOOK_TITLE_ALL: 
+    		return UriTestActivity.BOOK_TITLE_ALL_MIME;
+    	case CODE_BOOK_TITLE_SINGLE: 
+    		return UriTestActivity.BOOK_TITLE_SINGLE_MIME;
+    	case CODE_BOOK_AUTHOR_ALL: 
+    		return UriTestActivity.BOOK_AUTHOR_ALL_MIME;
+    	case CODE_BOOK_AUTHOR_SINGLE: 
+    		return UriTestActivity.BOOK_AUTHOR_SINGLE_MIME;
+    	case CODE_BOOK_COVER_ALL: 
+    		return UriTestActivity.BOOK_COVER_ALL_MIME;
+    	case CODE_BOOK_COVER_SINGLE: 
+    		return UriTestActivity.BOOK_COVER_ALL_MIME;
+    	}
+    	return "NONE";
+    }
+    
+    
 }
